@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusPhone | 重新定义手机体验</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0071e3;
+            --secondary-color: #1d1d1f;
+            --light-color: #f5f5f7;
+            --gray-color: #86868b;
+            --success-color: #00c853;
+            --text-dark: #1d1d1f;
+            --text-light: #f5f5f7;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 粒子背景 */
+        .particles-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1f 100%);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon {
+            color: white;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 通用部分样式 */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 5%;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(to right, #fff, #a8a8a8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--gray-color);
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 顶部Hero部分 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            color: #a8a8a8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0077ed;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 113, 227, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint i {
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-10px) translateX(-50%);}
+            60% {transform: translateY(-5px) translateX(-50%);}
+        }
+
+        /* 3D手机模型容器 */
+        .phone-model-container {
+            width: 400px;
+            height: 400px;
+            margin: 2rem auto 0;
+            perspective: 1000px;
+        }
+
+        .phone-model {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(-15deg) rotateX(10deg);
+            transition: transform 0.5s ease;
+        }
+
+        .phone-screen {
+            position: absolute;
+            width: 87%;
+            height: 94%;
+            background: #111;
+            border-radius: 40px;
+            top: 3%;
+            left: 6.5%;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .phone-screen-content {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1f);
+            border-radius: 36px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #aaa, #eee, #aaa);
+            border-radius: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-camera {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #333;
+            border-radius: 50%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        /* 产品亮点部分 */
+        .features {
+            background-color: #000;
+            color: white;
+        }
+
+        .features-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding-bottom: 2rem;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .features-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .feature-card {
+            min-width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .feature-card.active {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .feature-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-description {
+            font-size: 1.3rem;
+            color: var(--gray-color);
+            text-align: center;
+            max-width: 600px;
+        }
+
+        /* 产品细节部分 */
+        .product-details {
+            background-color: #111;
+            color: white;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8rem;
+        }
+
+        .detail-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .detail-text {
+            flex: 1;
+            padding-right: 4rem;
+        }
+
+        .detail-item:nth-child(even) .detail-text {
+            padding-right: 0;
+            padding-left: 4rem;
+        }
+
+        .detail-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-subtitle {
+            font-size: 1.5rem;
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+
+        .detail-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #a8a8a8;
+        }
+
+        .detail-image {
+            flex: 1;
+            height: 500px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .detail-image.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 颜色选择部分 */
+        .color-options {
+            background-color: #000;
+            color: white;
+        }
+
+        .color-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-name {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .color-name.active {
+            opacity: 1;
+        }
+
+        /* 性能对比部分 */
+        .performance {
+            background-color: #111;
+            color: white;
+        }
+
+        .comparison-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .comparison-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .comparison-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .comparison-bar {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .comparison-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        .comparison-value {
+            text-align: right;
+            margin-top: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* 价格部分 */
+        .pricing {
+            background-color: #000;
+            color: white;
+        }
+
+        .pricing-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .pricing-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 3rem;
+            width: 320px;
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.recommended {
+            background-color: rgba(0, 113, 227, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .pricing-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-features i {
+            color: var(--success-color);
+            margin-right: 10px;
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: #111;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #a8a8a8;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .newsletter-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-button:hover {
+            background-color: #0077ed;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--gray-color);
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                margin-bottom: 5rem;
+            }
+            
+            .detail-item:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .detail-text, .detail-item:nth-child(even) .detail-text {
+                padding: 0;
+                margin-bottom: 3rem;
+                text-align: center;
+            }
+            
+            .detail-image {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 5%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+            
+            .phone-model-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .pricing-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pricing-card {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div class="particles-background" id="particles-bg"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <i class="fas fa-mobile-alt"></i>
+            NexusPhone
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#features">亮点</a></li>
+            <li><a href="#details">细节</a></li>
+            <li><a href="#colors">颜色</a></li>
+            <li><a href="#performance">性能</a></li>
+            <li><a href="#pricing">价格</a></li>
+        </ul>
+        
+        <div class="nav-actions">
+            <a href="#" class="cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero部分 -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">重新定义手机体验</h1>
+            <p class="hero-subtitle">从设计到性能，每一处都为你而生</p>
+            
+            <div class="hero-buttons">
+                <a href="#pricing" class="btn btn-primary">立即购买</a>
+                <a href="#features" class="btn btn-secondary">了解更多</a>
+            </div>
+            
+            <!-- 3D手机模型 -->
+            <div class="phone-model-container">
+                <div class="phone-model" id="phone-model">
+                    <div class="phone-frame"></div>
+                    <div class="phone-screen">
+                        <div class="phone-screen-content">
+                            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">NexusPhone Pro</h2>
+                            <p style="color: #a8a8a8; text-align: center;">超视网膜XDR显示屏</p>
+                        </div>
+                    </div>
+                    <div class="phone-camera"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-hint">
+            <span>继续探索</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- 产品亮点部分 -->
+    <section class="features" id="features">
+        <h2 class="section-title">核心亮点</h2>
+        <p class="section-subtitle">体验前所未有的手机性能与设计</p>
+        
+        <div class="features-container" id="features-container">
+            <div class="feature-card active">
+                <div class="feature-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <h3 class="feature-title">超清屏幕</h3>
+                <p class="feature-description">120Hz ProMotion自适应刷新率，HDR显示，2000尼特峰值亮度，带来极致流畅的视觉体验。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-battery-full"></i>
+                </div>
+                <h3 class="feature-title">超强续航</h3>
+                <p class="feature-description">全天候电池续航，支持快速充电和无线充电，告别电量焦虑。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="feature-title">极速拍照</h3>
+                <p class="feature-description">专业级三摄系统，夜景模式、人像模式、微距拍摄，捕捉每一个精彩瞬间。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品细节部分 -->
+    <section class="product-details" id="details">
+        <h2 class="section-title">精湛工艺</h2>
+        <p class="section-subtitle">每一处细节都经过精心打磨</p>
+        
+        <div class="detail-item">
+            <div class="detail-text">
+                <h3 class="detail-title">超窄边框</h3>
+                <p class="detail-subtitle">沉浸式视觉体验</p>
+                <p class="detail-description">采用最先进的屏幕封装技术，边框宽度仅1.5mm，屏占比高达94%，带来无边界的视觉沉浸感。</p>
+            </div>
+            <div class="detail-image visible" style="background: linear-gradient(135deg, #0a0a0a, #1a1a1f);"></div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-text">
+                <h3 class="detail-title">航空铝合金</h3>
+                <p class="detail-subtitle">坚固与轻量的完美结合</p>
+                <p class="detail-description">机身采用航天级铝合金框架，强度提升30%，重量减轻15%，兼具卓越耐用性与舒适握持感。</p>
+            </div>
+            <div class="detail-image" style="background: linear-gradient(135deg, #2c2c2c, #4a4a4a);"></div>
+        </div>
+    </section>
+
+    <!-- 颜色选择部分 -->
+    <section class="color-options" id="colors">
+        <h2 class="section-title">选择你的颜色</h2>
+        <p class="section-subtitle">五种独特配色，彰显个性风格</p>
+        
+        <div class="color-selector">
+            <div class="color-option active" style="background-color: #1d1d1f;" data-color="#1d1d1f" data-name="深空黑">
+                <div class="color-name active">深空黑</div>
+            </div>
+            <div class="color-option" style="background-color: #f5f5f7;" data-color="#f5f5f7" data-name="皓月银">
+                <div class="color-name">皓月银</div>
+            </div>
+            <div class="color-option" style="background-color: #0a84ff;" data-color="#0a84ff" data-name="星空蓝">
+                <div class="color-name">星空蓝</div>
+            </div>
+            <div class="color-option" style="background-color: #30d158;" data-color="#30d158" data-name="极光绿">
+                <div class="color-name">极光绿</div>
+            </div>
+            <div class="color-option" style="background-color: #ff375f;" data-color="#ff375f" data-name="珊瑚红">
+                <div class="color-name">珊瑚红</div>
+            </div>
+        </div>
+        
+        <p class="section-subtitle" id="color-description">深空黑：低调沉稳，商务必备</p>
+    </section>
+
+    <!-- 性能对比部分 -->
+    <section class="performance" id="performance">
+        <h2 class="section-title">卓越性能</h2>
+        <p class="section-subtitle">与竞争对手相比，性能领先一代</p>
+        
+        <div class="comparison-container">
+            <div class="comparison-item">
+                <div class="comparison-label">
+                    <span>CPU速度</span>
+                    <span>NexusPhone Pro</span>
+                </div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" data-value="95"></div>
+                </div>
+                <div class="comparison-value">0%</div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="comparison-label">
+                    <span>游戏帧率</span>
+                    <span>NexusPhone Pro</span>
+                </div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" data-value="90"></div>
+                </div>
+                <div class="comparison-value">0%</div>
+            </div>
+            
+            <div class="comparison-item">
+                <div class="comparison-label">
+                    <span>开机速度</span>
+                    <span>NexusPhone Pro</span>
+                </div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" data-value="98"></div>
+                </div>
+                <div class="comparison-value">0%</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 价格部分 -->
+    <section class="pricing" id="pricing">
+        <h2 class="section-title">选择你的套餐</h2>
+        <p class="section-subtitle">找到最适合你的NexusPhone版本</p>
+        
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3 class="pricing-title">标准版</h3>
+                <div class="pricing-price">¥6,999</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 6.1英寸超视网膜XDR显示屏</li>
+                    <li><i class="fas fa-check"></i> A16仿生芯片</li>
+                    <li><i class="fas fa-check"></i> 双摄系统 (广角、超广角)</li>
+                    <li><i class="fas fa-check"></i> 128GB存储空间</li>
+                </ul>
+                <a href="#" class="btn btn-primary">立即购买</a>
+            </div>
+            
+            <div class="pricing-card recommended">
+                <div style="background-color: var(--primary-color); color: white; padding: 0.5rem; border-radius: 20px; margin-bottom: 1rem; font-weight: 600;">最受欢迎</div>
+                <h3 class="pricing-title">Pro版</h3>
+                <div class="pricing-price">¥8,999</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 6.7英寸ProMotion显示屏</li>
+                    <li><i class="fas fa-check"></i> A16 Pro仿生芯片</li>
+                    <li><i class="fas fa-check"></i> 专业三摄系统 (长焦、广角、超广角)</li>
+                    <li><i class="fas fa-check"></i> 256GB存储空间</li>
+                    <li><i class="fas fa-check"></i> 全天候显示</li>
+                </ul>
+                <a href="#" class="btn btn-primary">立即购买</a>
+            </div>
+            
+            <div class="pricing-card">
+                <h3 class="pricing-title">Ultra版</h3>
+                <div class="pricing-price">¥11,999</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 6.9英寸ProMotion XDR显示屏</li>
+                    <li><i class="fas fa-check"></i> A16 Ultra仿生芯片</li>
+                    <li><i class="fas fa-check"></i> 四摄系统 (包括微距镜头)</li>
+                    <li><i class="fas fa-check"></i> 1TB存储空间</li>
+                    <li><i class="fas fa-check"></i> 钛金属边框</li>
+                </ul>
+                <a href="#" class="btn btn-primary">立即购买</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NexusPhone</h3>
+                <p>重新定义手机体验，为每一个细节而生。</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-qq"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-bilibili"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>产品</h3>
+                <ul class="footer-links">
+                    <li><a href="#">NexusPhone Pro</a></li>
+                    <li><a href="#">NexusPhone Ultra</a></li>
+                    <li><a href="#">配件</a></li>
+                    <li><a href="#">技术支持</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>服务</h3>
+                <ul class="footer-links">
+                    <li><a href="#">NexusCare+</a></li>
+                    <li><a href="#">维修服务</a></li>
+                    <li><a href="#">分期付款</a></li>
+                    <li><a href="#">以旧换新</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>订阅获取最新资讯</h3>
+                <p>第一时间获取产品更新和特别优惠。</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="输入您的邮箱">
+                    <button type="submit" class="newsletter-button">订阅</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 NexusPhone. 保留所有权利。 | <a href="#" style="color: var(--gray-color);">隐私政策</a> | <a href="#" style="color: var(--gray-color);">服务条款</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化变量
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建粒子背景
+            createParticles();
+            
+            // 3D手机模型交互
+            const phoneModel = document.getElementById('phone-model');
+            let mouseX = 0, mouseY = 0;
+            let targetX = 0, targetY = 0;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // 鼠标移动时旋转手机模型
+            document.addEventListener('mousemove', function(e) {
+                mouseX = (e.clientX - windowWidth / 2) / 100;
+                mouseY = (e.clientY - windowHeight / 2) / 100;
+            });
+            
+            // 动画循环
+            function animatePhone() {
+                targetX += (mouseX - targetX) * 0.05;
+                targetY += (mouseY - targetY) * 0.05;
+                
+                phoneModel.style.transform = `rotateY(${-15 + targetX}deg) rotateX(${10 - targetY}deg)`;
+                
+                requestAnimationFrame(animatePhone);
+            }
+            
+            animatePhone();
+            
+            // 产品亮点横向滚动
+            const featuresContainer = document.getElementById('features-container');
+            let currentFeatureIndex = 0;
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            // 自动轮播
+            setInterval(() => {
+                currentFeatureIndex = (currentFeatureIndex + 1) % featureCards.length;
+                
+                // 更新激活状态
+                featureCards.forEach((card, index) => {
+                    if (index === currentFeatureIndex) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+                
+                // 滚动到当前卡片
+                featuresContainer.scrollTo({
+                    left: currentFeatureIndex * featuresContainer.offsetWidth,
+                    behavior: 'smooth'
+                });
+            }, 4000);
+            
+            // 颜色选择功能
+            const colorOptions = document.querySelectorAll('.color-option');
+            const colorDescription = document.getElementById('color-description');
+            
+            // 颜色描述映射
+            const colorDescriptions = {
+                '深空黑': '深空黑：低调沉稳，商务必备',
+                '皓月银': '皓月银：纯净优雅，经典之选',
+                '星空蓝': '星空蓝：深邃宁静，科技感十足',
+                '极光绿': '极光绿：自然生机，彰显个性',
+                '珊瑚红': '珊瑚红：热情活力，时尚先锋'
+            };
+            
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除所有激活状态
+                    colorOptions.forEach(opt => {
+                        opt.classList.remove('active');
+                        opt.querySelector('.color-name').classList.remove('active');
+                    });
+                    
+                    // 添加当前激活状态
+                    this.classList.add('active');
+                    this.querySelector('.color-name').classList.add('active');
+                    
+                    // 获取颜色名称并更新描述
+                    const colorName = this.getAttribute('data-name');
+                    colorDescription.textContent = colorDescriptions[colorName] || '';
+                    
+                    // 更新手机模型颜色
+                    const color = this.getAttribute('data-color');
+                    phoneModel.querySelector('.phone-frame').style.background = `linear-gradient(135deg, ${color}, ${lightenColor(color, 30)}, ${color})`;
+                });
+            });
+            
+            // 性能对比动画
+            const comparisonItems = document.querySelectorAll('.comparison-item');
+            
+            // 检查元素是否在视口中
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // 触发数字增长动画
+            function animateComparisonValues() {
+                comparisonItems.forEach(item => {
+                    if (isElementInViewport(item) && !item.classList.contains('animated')) {
+                        item.classList.add('animated');
+                        
+                        const fill = item.querySelector('.comparison-fill');
+                        const valueElement = item.querySelector('.comparison-value');
+                        const targetValue = parseInt(fill.getAttribute('data-value'));
+                        
+                        // 动画填充条
+                        fill.style.width = targetValue + '%';
+                        
+                        // 动画数字增长
+                        let currentValue = 0;
+                        const increment = targetValue / 50; // 50步完成
+                        const timer = setInterval(() => {
+                            currentValue += increment;
+                            if (currentValue >= targetValue) {
+                                currentValue = targetValue;
+                                clearInterval(timer);
+                            }
+                            valueElement.textContent = Math.round(currentValue) + '%';
+                        }, 30);
+                    }
+                });
+            }
+            
+            // 滚动监听
+            window.addEventListener('scroll', animateComparisonValues);
+            // 初始检查
+            animateComparisonValues();
+            
+            // 视差滚动效果
+            const detailImages = document.querySelectorAll('.detail-image');
+            
+            function checkScroll() {
+                detailImages.forEach(image => {
+                    if (isElementInViewport(image)) {
+                        image.classList.add('visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkScroll);
+            // 初始检查
+            checkScroll();
+            
+            // 购物车功能
+            const cartCount = document.querySelector('.cart-count');
+            const buyButtons = document.querySelectorAll('.btn-primary');
+            let cartItems = 0;
+            
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.closest('.pricing-card')) {
+                        e.preventDefault();
+                        cartItems++;
+                        cartCount.textContent = cartItems;
+                        
+                        // 添加动画效果
+                        cartCount.style.transform = 'scale(1.5)';
+                        setTimeout(() => {
+                            cartCount.style.transform = 'scale(1)';
+                        }, 300);
+                        
+                        // 显示添加成功消息
+                        alert('商品已添加到购物车！');
+                    }
+                });
+            });
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                    navbar.style.padding = '0.8rem 5%';
+                } else {
+                    navbar.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                    navbar.style.padding = '1.2rem 5%';
+                }
+            });
+            
+            // 工具函数：颜色变亮
+            function lightenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = (num >> 16) + amt;
+                const G = (num >> 8 & 0x00FF) + amt;
+                const B = (num & 0x0000FF) + amt;
+                
+                return "#" + (
+                    0x1000000 +
+                    (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                    (B < 255 ? B < 1 ? 0 : B : 255)
+                ).toString(16).slice(1);
+            }
+        });
+        
+        // 创建粒子背景
+        function createParticles() {
+            const particlesBg = document.getElementById('particles-bg');
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 3 + 1 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.2)';
+                
+                // 添加动画
+                particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                particlesBg.appendChild(particle);
+            }
+            
+            // 添加CSS动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0) translateX(0); }
+                    25% { transform: translateY(-20px) translateX(10px); }
+                    50% { transform: translateY(-10px) translateX(20px); }
+                    75% { transform: translateY(10px) translateX(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>
